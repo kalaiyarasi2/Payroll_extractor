@@ -1,0 +1,6 @@
+venv/
+.env
+inputs/
+outputs/
+extracted_text/
+Electrical Source/
