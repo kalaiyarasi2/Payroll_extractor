@@ -4,3 +4,4 @@ inputs/
 outputs/
 extracted_text/
 Electrical Source/
+__pycache__/
