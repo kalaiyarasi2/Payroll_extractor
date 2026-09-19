@@ -237,6 +237,23 @@ def process_page(client, pdf_path, page_num):
                 max_tokens=2000
             )
 
+            try:
+                import sys, os
+                workspace_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+                if workspace_dir not in sys.path:
+                    sys.path.insert(0, workspace_dir)
+                from core.universal_token_monitor import track_usage
+                if hasattr(response, "usage") and response.usage:
+                    track_usage(
+                        response_usage=response.usage,
+                        poc_name="PAYROLL EXTRACTOR",
+                        file_name=os.path.basename(pdf_path),
+                        model=MODEL,
+                        step_name="vision_extraction"
+                    )
+            except Exception as e:
+                print("Failed to log tokens:", e)
+
             content = response.choices[0].message.content.strip()
             result = json.loads(content)
             result["method"] = "gpt-vision"
