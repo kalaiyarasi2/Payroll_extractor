@@ -14,7 +14,7 @@ Defaults:
     output  = payroll_output_gpt.csv
     workers = 8                      (parallel threads)
     batch   = 5                      (pages per GPT call — reduces API round trips)
-    model   = gpt-4o                 (best accuracy; use gpt-4o-mini for lower cost)
+    model   = gpt-5.6-terra                 (best accuracy; use gpt-4o-mini for lower cost)
 
 Requirements:
     pip install openai
@@ -38,7 +38,7 @@ from dotenv import load_dotenv
 
 # ── OpenAI client (initialised in main() after args parsed) ──────────────────
 client = None
-MODEL  = "gpt-4o"
+MODEL  = "gpt-5.6-terra"
 
 # ── CSV layout (matches original regex script exactly) ────────────────────────
 CSV_COLUMNS = [
@@ -113,7 +113,7 @@ def call_llm(batch_text: str, page_nums: list[int], retries: int = 3) -> list[di
             response = client.chat.completions.create(
                 model       = MODEL,
                 temperature = 0,          # deterministic extraction
-                max_tokens  = 2000,
+                max_completion_tokens = 2000,
                 response_format = {"type": "json_object"},   # JSON mode — no fences
                 messages    = [
                     {"role": "system", "content": SYSTEM},
@@ -180,7 +180,7 @@ def main():
     parser.add_argument("output", nargs="?", default="payroll_output_gpt.csv")
     parser.add_argument("--workers", type=int,  default=8,      help="Parallel threads (default 8)")
     parser.add_argument("--batch",   type=int,  default=5,      help="Pages per GPT call (default 5)")
-    parser.add_argument("--model",             default="gpt-4o", help="OpenAI model (default gpt-4o)")
+    parser.add_argument("--model",             default="gpt-5.6-terra", help="OpenAI model (default gpt-5.6-terra)")
     parser.add_argument("--api-key", dest="api_key", default=None,
                         help="OpenAI API key (overrides OPENAI_API_KEY env var)")
     args = parser.parse_args()

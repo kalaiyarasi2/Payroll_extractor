@@ -87,7 +87,7 @@ JSON example:
 Return ONLY the raw JSON. No markdown fences.
 """
 
-MODEL = "gpt-4o"
+MODEL = "gpt-5.6-terra"
 
 def _g(match, group=1, default=""):
     if match is None: return default
@@ -234,7 +234,7 @@ def process_page(client, pdf_path, page_num):
                         ]
                     }
                 ],
-                max_tokens=2000
+                max_completion_tokens=2000
             )
 
             try:
